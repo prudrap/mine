@@ -1,0 +1,15 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Kubernetes@1
+  displayName: apply manifests
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: '$(k8sConnection)'
+    command: apply
+    useConfigurationFile: true
+    configuration: 'manifests/*.yml'

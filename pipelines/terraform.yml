@@ -1,0 +1,33 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: TerraformInstaller@0
+  displayName: Install Terraform
+  inputs:
+    terraformVersion: '1.5.0'
+
+- task: TerraformTaskV4@4
+  displayName: init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: '$(azureServiceConnection)'
+    backendAzureRmResourceGroupName: 'terraform'
+    backendAzureRmStorageAccountName: 'tfstate'
+    backendAzureRmContainerName: 'state'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTaskV4@4
+  displayName: apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: '$(azureServiceConnection)'
+    allowTelemetryCollection: false
+    vars: |
+      location=westus2
+    secureVarsFile: 'secrets.tfvars'

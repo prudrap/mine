@@ -1,0 +1,13 @@
+trigger:
+- main
+
+variables:
+- name: buildConfiguration
+  value: Release
+- group: my-variable-group
+
+extends:
+  template: templates/dotnet-build.yml
+  parameters:
+    dotNetVersion: '8.0.x'
+    runTests: true

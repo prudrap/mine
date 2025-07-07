@@ -1,0 +1,15 @@
+pr:
+- '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo 'Validating pull request...'
+  displayName: 'PR check'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo 'Run lint or unit tests here'

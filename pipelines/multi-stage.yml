@@ -1,0 +1,33 @@
+trigger:
+- main
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo 'Building...'
+
+- stage: Test
+  dependsOn: Build
+  jobs:
+  - job: Test
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo 'Running tests...'
+
+- stage: Deploy
+  dependsOn: Test
+  jobs:
+  - deployment: Deploy
+    environment: 'prod'
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo 'Deploying to production'
