@@ -1,0 +1,23 @@
+parameters:
+- name: dotNetVersion
+  type: string
+  default: '7.x'
+- name: runTests
+  type: boolean
+  default: true
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: ${{ parameters.dotNetVersion }}
+
+- script: dotnet restore
+  displayName: Restore
+
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: Build
+
+- ${{ if eq(parameters.runTests, true) }}:
+  - script: dotnet test --no-build
+    displayName: Test
